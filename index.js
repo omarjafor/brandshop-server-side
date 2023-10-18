@@ -24,12 +24,29 @@ async function run() {
         // Connect the client to the server	(optional starting in v4.7)
         await client.connect();
         const brandCollection = client.db('brandShopDB').collection('brand');
+        const productsCollection = client.db('brandShopDB').collection('products');
 
+        // Brands Data Loaded Related Api
         app.get('/brand', async(req, res) => {
             const cursor = brandCollection.find();
             const result = await cursor.toArray();
             res.send(result);
         })
+
+        // Products Data Related Api 
+        app.get('/products', async(req, res) => {
+            const cursor = productsCollection.find();
+            const result = await cursor.toArray();
+            res.send(result);
+        })
+
+        app.post('/products', async(req, res) => {
+            const newProduct = req.body;
+            console.log(newProduct);
+            const result = await productsCollection.insertOne(newProduct);
+            res.send(result);
+        })
+
 
         // Send a ping to confirm a successful connection
         await client.db("admin").command({ ping: 1 });
