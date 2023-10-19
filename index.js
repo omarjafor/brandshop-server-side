@@ -75,12 +75,17 @@ async function run() {
         })
 
         // My Cart Data Related Api
+        app.get('/mycart', async(req, res) => {
+            const cursor = mycartCollection.find();
+            const result = await cursor.toArray();
+            res.send(result);
+        })
+
         app.post('/mycart', async(req, res) => {
             const cartProduct = req.body;
             const result = await mycartCollection.insertOne(cartProduct);
             res.send(result);
         })
-
 
         // Send a ping to confirm a successful connection
         await client.db("admin").command({ ping: 1 });
