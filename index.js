@@ -25,6 +25,7 @@ async function run() {
         await client.connect();
         const brandCollection = client.db('brandShopDB').collection('brand');
         const productsCollection = client.db('brandShopDB').collection('products');
+        const mycartCollection = client.db('brandShopDB').collection('mycart');
 
         // Brands Data Loaded Related Api
         app.get('/brand', async(req, res) => {
@@ -70,6 +71,13 @@ async function run() {
                 }
             }
             const result = await productsCollection.updateOne(filter, product, options)
+            res.send(result);
+        })
+
+        // My Cart Data Related Api
+        app.post('/mycart', async(req, res) => {
+            const cartProduct = req.body;
+            const result = await mycartCollection.insertOne(cartProduct);
             res.send(result);
         })
 
