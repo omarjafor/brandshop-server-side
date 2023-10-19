@@ -53,7 +53,25 @@ async function run() {
             res.send(result);
         })
 
-        
+        app.put('/products/:id', async(req, res) => {
+            const id = req.params.id;
+            const filter = { _id: new ObjectId(id)}
+            const options = { upsert: true }
+            const updatedProduct = req.body;
+            const product = {
+                $set: {
+                    productName: updatedProduct.productName, 
+                    brandName: updatedProduct.brandName, 
+                    type: updatedProduct.type, 
+                    price: updatedProduct.price, 
+                    description: updatedProduct.description, 
+                    rating: updatedProduct.rating, 
+                    photo: updatedProduct.photo
+                }
+            }
+            const result = await productsCollection.updateOne(filter, product, options)
+            res.send(result);
+        })
 
 
         // Send a ping to confirm a successful connection
